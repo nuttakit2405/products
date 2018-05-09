@@ -182,6 +182,7 @@ export default {
 }
 .card-footer-item {
   cursor: pointer;
+  font-weight: 600;
 }
 .card-footer-item:hover {
   background-color: hsl(0, 0%, 96%);
