@@ -33,7 +33,7 @@
       <span v-if="bucketCount" class="count">{{bucketCount}}</span>
     </div>
     <b-modal :active.sync="isComponentModalActive" has-modal-card>
-      <bucket :data="bucket" @inclese="incleseAmount" @declese="decleseAmount" />
+      <bucket :data="bucket" @buy="buy" @inclese="incleseAmount" @declese="decleseAmount" @delete="deleteInBucket" />
     </b-modal>
   </div>
 </template>
@@ -75,13 +75,23 @@ export default {
         })
       }
     },
-    incleseAmount (index) {
-      this.bucket[index].amount++
+    incleseAmount (index, id) {
+      if (this.bucket[index].amount < this.Products[id].amount) {
+        this.bucket[index].amount++
+      }
     },
     decleseAmount (index) {
       if (this.bucket[index].amount > 0) {
         this.bucket[index].amount--
       }
+    },
+    deleteInBucket (index) {
+      this.bucket.splice(index, 1)
+    },
+    buy () {
+      console.log(this.bucket)
+      this.bucket = []
+      this.isComponentModalActive = false
     }
   },
   created () {

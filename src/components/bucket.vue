@@ -13,15 +13,21 @@
               <b-icon type="is-danger" icon="minus-circle"></b-icon>
             </div>
             <input style="width: 50px;" class="input" :value="product.amount" disabled id="">
-            <div class="button" @click="$emit('inclese', index)">
+            <div class="button" @click="$emit('inclese', index, product.id)">
               <b-icon type="is-success" icon="plus-circle"></b-icon>
             </div>
           </div>
           <span class="column is-2 has-text-right">฿ {{product.amount*product.price}}</span>
+          <div class="button is-danger" @click="$emit('delete', index)">
+            <b-icon icon="delete"></b-icon>
+          </div>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button" type="button" @click="$parent.close()">Close</button>
+        <span class="total has-text-right">
+          ราคารวม {{totalPrice}} ฿
+        </span>
+        <button @click="$emit('buy')" class="button is-success">ชำระสินค้า</button>
       </footer>
     </div>
   </form>
@@ -31,6 +37,11 @@
 export default {
   props: {
     data: Array
+  },
+  computed: {
+    totalPrice () {
+      return this.data.filter(item => item.amount).reduce((prev, curr) => (prev += curr.amount * curr.price), 0)
+    }
   }
 }
 </script>
@@ -46,5 +57,10 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.total {
+  width: 100%;
+  font-weight: 600;
+  margin-right: 10px;
 }
 </style>
