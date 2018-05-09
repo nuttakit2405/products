@@ -1,6 +1,15 @@
 <template>
-  <div class="hello container">
-    <div class=" is-size-2 center">WareHouse</div>
+  <div class="hello">
+   <router-link to="/stock"> <div class ="plus">
+     <b-icon
+                icon="plus-circle"
+                size="is-large">
+      </b-icon>
+    </div>
+    </router-link>
+    <div class="container">
+    <img src = "/static/1.png" width="300">
+
     <div class="columns is-centered is-multiline">
       <div class="column is-4" :key="key" v-for="(Product, key) in Products">
         <div class="card widthcard is-centered">
@@ -37,6 +46,7 @@
     <b-modal :active.sync="isComponentModalActive" has-modal-card>
       <bucket :data="bucket" @buy="buy" @inclese="incleseAmount" @declese="decleseAmount" @delete="deleteInBucket" />
     </b-modal>
+  </div>
   </div>
 </template>
 
@@ -146,5 +156,10 @@ export default {
   cursor: not-allowed;
   background: hsl(348, 100%, 61%);
   color: white;
+}
+.plus{
+position: absolute;
+  top: 25px;
+  right: 100px;
 }
 </style>
