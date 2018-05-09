@@ -5,15 +5,15 @@
         <p class="modal-card-title">ตะกร้าสินค้า</p>
       </header>
       <section class="modal-card-body ">
-        <div class="product columns" :key="product.id" v-for="product in data">
+        <div class="product columns" :key="product.id" v-for="(product, index) in data">
           <div style="width: 100px; height: 100px;"><img width="100" class="image" v-url="{filename: product.pic}" alt=""></div>
           <span class="column has-text-left">{{product.name}} (฿{{product.price}})</span>
           <div class="amount column is-3">
-            <div>
+            <div class="button" @click="$emit('declese', index)">
               <b-icon type="is-danger" icon="minus-circle"></b-icon>
             </div>
             <input style="width: 50px;" class="input" :value="product.amount" disabled id="">
-            <div class="button">
+            <div class="button" @click="$emit('inclese', index)">
               <b-icon type="is-success" icon="plus-circle"></b-icon>
             </div>
           </div>

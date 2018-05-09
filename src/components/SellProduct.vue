@@ -80,7 +80,7 @@ export default {
     },
     decleseAmount (index) {
       if (this.bucket[index].amount > 0) {
-        this.bucket[index].amount++
+        this.bucket[index].amount--
       }
     }
   },
