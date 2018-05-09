@@ -1,8 +1,5 @@
 <template>
   <div class="hello container">
-    <div class="bucket">
-      <img src="/static/bucket.png" width="35" alt="">
-    </div>
     <div class=" is-size-2 center">WareHouse</div>
     <div class="columns is-centered is-multiline">
       <div class="column is-4" :key="key" v-for="(Product, key) in Products">
@@ -26,26 +23,59 @@
           </div>
 
           <footer class="card-footer">
-            <div class="card-footer-item orange">เลือกสินค้า</div>
+            <div @click="addToBucket(key)" class="card-footer-item orange">เลือกสินค้า</div>
           </footer>
         </div>
       </div>
     </div>
+    <div class="bucket" @click="isComponentModalActive = true">
+      <img src="/static/bucket.png" width="35" alt="">
+      <span v-if="bucketCount" class="count">{{bucketCount}}</span>
+    </div>
+    <b-modal :active.sync="isComponentModalActive" has-modal-card>
+      <bucket :data="bucket" />
+    </b-modal>
   </div>
 </template>
 
 <script>
+import bucket from './bucket'
 export default {
-  name: 'GetProduct',
+  name: 'SellProduc',
+  components: {
+    bucket
+  },
   data () {
     return {
+      isComponentModalActive: false,
       database: {},
       storageRef: {},
       productRef: {},
-      Products: []
+      Products: {},
+      bucket: []
     }
   },
-  methods: {},
+  computed: {
+    bucketCount () {
+      return this.bucket.reduce((prev, curr) => (prev += curr.amount), 0)
+    }
+  },
+  methods: {
+    addToBucket (id) {
+      const index = this.bucket.findIndex(item => item.id === id)
+      if (index !== -1) {
+        this.bucket[index].amount++
+      } else {
+        this.bucket.push({
+          id: id,
+          name: this.Products[id].name,
+          pic: this.Products[id].pic,
+          price: this.Products[id].price,
+          amount: 1
+        })
+      }
+    }
+  },
   created () {
     this.database = this.$firebase.database()
     this.storageRef = this.$firebase.storage().ref()
@@ -58,6 +88,15 @@ export default {
 </script>
 
 <style>
+.count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  border-radius: 50%;
+  background-color: red;
+  padding: 2px 8px 0px 8px;
+  color: white;
+}
 .bucket {
   position: fixed;
   top: 20px;
