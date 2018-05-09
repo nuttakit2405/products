@@ -41,7 +41,7 @@
         <a class="button is-success" @click="insertProduct(name, price, amount,files[0])">Success</a>
       </div>
     </div>
-    <div>
+    <div style ="margin-bottom: 30px">
     </div>
 
     <div class="columns is-centered is-multiline">
@@ -101,7 +101,7 @@ var productRef = database.ref('/Products')
 var storageRef = firebase.storage().ref()
 
 export default {
-  name: 'HelloWorld',
+  name: 'GetProduct',
   data () {
     return {
       Products: [],
