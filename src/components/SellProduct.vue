@@ -33,7 +33,7 @@
       <span v-if="bucketCount" class="count">{{bucketCount}}</span>
     </div>
     <b-modal :active.sync="isComponentModalActive" has-modal-card>
-      <bucket :data="bucket" />
+      <bucket :data="bucket" @inclese="incleseAmount" @declese="decleseAmount" />
     </b-modal>
   </div>
 </template>
@@ -73,6 +73,14 @@ export default {
           price: this.Products[id].price,
           amount: 1
         })
+      }
+    },
+    incleseAmount (index) {
+      this.bucket[index].amount++
+    },
+    decleseAmount (index) {
+      if (this.bucket[index].amount > 0) {
+        this.bucket[index].amount++
       }
     }
   },
