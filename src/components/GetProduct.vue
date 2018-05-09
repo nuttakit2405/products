@@ -35,13 +35,13 @@
       </div>
 
     </div>
-<!-- -------------------------------------------------- -->
+    <!-- -------------------------------------------------- -->
     <div class="columns is-centered">
       <div class="column is-4">
         <a class="button is-success" @click="insertProduct(name, price, amount,files[0])">Success</a>
       </div>
     </div>
-    <div style ="margin-bottom: 30px">
+    <div style="margin-bottom: 30px">
     </div>
 
     <div class="columns is-centered is-multiline">
@@ -54,33 +54,33 @@
           </div>
           <div class="card-content" v-if="key !== updateKey">
             <div>
-                <div class="title is-4 has-text-left">{{Product.name}}
-                </div>
-                <div class = "columns">
-                  <span class="column title is-6 has-text-left has-text-danger">฿{{Product.price}}
-                  </span>
-                  <span class="column title is-6 has-text-right">Amount  {{Product.amount}}
-                  </span>
-                </div>
+              <div class="title is-4 has-text-left">{{Product.name}}
+              </div>
+              <div class="columns">
+                <span class="column title is-6 has-text-left has-text-danger">฿{{Product.price}}
+                </span>
+                <span class="column title is-6 has-text-right">Amount {{Product.amount}}
+                </span>
+              </div>
             </div>
           </div>
           <!-- ----------------------edit------------------------- -->
           <div class="card-content" v-if="key === updateKey">
             <div>
-                <div class="title is-4 has-text-left"><input v-model="updateName" class="input is-focused" type="text" placeholder="Edit Name">
-                </div>
-                <div class = "columns">
-                  <span class="column title is-6 has-text-left has-text-danger"> <input v-model="updatePrice" class="input is-focused" type="number" placeholder="Edit Price">
-                  </span>
-                  <span class="column title is-6 has-text-right"> <input v-model="updateAmount" class="input is-focused" type="number" placeholder="Edit Amount">
-                  </span>
-                </div>
+              <div class="title is-4 has-text-left"><input v-model="updateName" class="input is-focused" type="text" placeholder="Edit Name">
+              </div>
+              <div class="columns">
+                <span class="column title is-6 has-text-left has-text-danger"> <input v-model="updatePrice" class="input is-focused" type="number" placeholder="Edit Price">
+                </span>
+                <span class="column title is-6 has-text-right"> <input v-model="updateAmount" class="input is-focused" type="number" placeholder="Edit Amount">
+                </span>
+              </div>
             </div>
           </div>
 
           <footer class="card-footer">
             <div @click="updateToProduct (updateName, updatePrice,updateAmount, Product.pic)" class="card-footer-item">Save</div>
-            <div  @click="setUpdateProduct (key, Product)" class="card-footer-item">Edit</div>
+            <div @click="setUpdateProduct (key, Product)" class="card-footer-item">Edit</div>
             <div @click="deleteProduct (key)" class="card-footer-item">Delete</div>
           </footer>
         </div>
@@ -90,20 +90,13 @@
 </template>
 
 <script>
-import * as firebase from 'firebase'
-var config = {
-  databaseURL: 'https://product-firebase-a9a0e.firebaseio.com',
-  storageBucket: 'product-firebase-a9a0e.appspot.com'
-}
-firebase.initializeApp(config)
-var database = firebase.database()
-var productRef = database.ref('/Products')
-var storageRef = firebase.storage().ref()
-
 export default {
   name: 'GetProduct',
   data () {
     return {
+      database: {},
+      storageRef: {},
+      productRef: {},
       Products: [],
       name: '',
       price: '',
@@ -117,21 +110,21 @@ export default {
   },
   methods: {
     async insertProduct (name, price, amount, file) {
-      await storageRef.child(file.name).put(file)
+      await this.storageRef.child(file.name).put(file)
       let data = {
         name: name,
         price: price,
         amount: amount,
         pic: file.name
       }
-      await productRef.push(data)
+      await this.productRef.push(data)
       this.name = ''
       this.price = ''
       this.amount = ''
       this.files = []
     },
     deleteProduct (key) {
-      productRef.child(key).remove()
+      this.productRef.child(key).remove()
     },
     setUpdateProduct (key, Product) {
       this.updateKey = key
@@ -140,7 +133,7 @@ export default {
       this.updateAmount = Product.amount
     },
     updateToProduct (name, price, amount, file) {
-      productRef.child(this.updateKey).update({
+      this.productRef.child(this.updateKey).update({
         name: name,
         price: price,
         amount: amount,
@@ -152,20 +145,13 @@ export default {
       this.updateAmount = ''
     }
   },
-  mounted () {
-    productRef.on('value', snapshot => {
+  created () {
+    this.database = this.$firebase.database()
+    this.storageRef = this.$firebase.storage().ref()
+    this.productRef = this.database.ref('/Products')
+    this.productRef.on('value', snapshot => {
       this.Products = snapshot.val()
     })
-  },
-  directives: {
-    url: {
-      async bind (el, binding) {
-        let url = await storageRef
-          .child(binding.value.filename)
-          .getDownloadURL()
-        el.src = url
-      }
-    }
   }
 }
 </script>
@@ -198,6 +184,6 @@ export default {
   cursor: pointer;
 }
 .card-footer-item:hover {
-  background-color:hsl(0, 0%, 96%);
+  background-color: hsl(0, 0%, 96%);
 }
 </style>

@@ -7,6 +7,21 @@ import router from './router'
 import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
 
+import * as firebase from 'firebase'
+
+var config = {
+  databaseURL: 'https://product-firebase-a9a0e.firebaseio.com',
+  storageBucket: 'product-firebase-a9a0e.appspot.com'
+}
+Vue.prototype.$firebase = firebase.initializeApp(config)
+let storageRef = firebase.storage().ref()
+Vue.directive('url', {
+  async bind (el, binding) {
+    let url = await storageRef.child(binding.value.filename).getDownloadURL()
+    el.src = url
+  }
+})
+
 Vue.use(Buefy)
 
 Vue.config.productionTip = false
