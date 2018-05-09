@@ -23,7 +23,9 @@
           </div>
 
           <footer class="card-footer">
-            <div @click="addToBucket(key)" class="card-footer-item orange">เลือกสินค้า</div>
+            <div :class="{
+              'disableSelect': Product.amount <= 0
+            }" @click="addToBucket(key)" class="card-footer-item orange">เลือกสินค้า</div>
           </footer>
         </div>
       </div>
@@ -63,8 +65,12 @@ export default {
   methods: {
     addToBucket (id) {
       const index = this.bucket.findIndex(item => item.id === id)
-      if (index !== -1) {
-        this.bucket[index].amount++
+      if (this.Products[id].amount <= 0) {
+        console.log('ของหมด')
+      } else if (index !== -1) {
+        if (this.bucket[index].amount < this.Products[id].amount) {
+          this.bucket[index].amount++
+        }
       } else {
         this.bucket.push({
           id: id,
@@ -133,6 +139,12 @@ export default {
 }
 .orange:hover {
   background-color: #fc7713;
+  cursor: pointer;
+  color: white;
+}
+.disableSelect {
+  cursor: not-allowed;
+  background: hsl(348, 100%, 61%);
   color: white;
 }
 </style>
