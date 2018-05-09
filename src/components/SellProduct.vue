@@ -88,8 +88,11 @@ export default {
     deleteInBucket (index) {
       this.bucket.splice(index, 1)
     },
-    buy () {
-      console.log(this.bucket)
+    async buy () {
+      await this.bucket.forEach(async item => {
+        const lastAmount = this.Products[item.id].amount - item.amount
+        await this.productRef.child(item.id).update({ amount: lastAmount })
+      })
       this.bucket = []
       this.isComponentModalActive = false
     }

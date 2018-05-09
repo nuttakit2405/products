@@ -27,7 +27,7 @@
         <span class="total has-text-right">
           ราคารวม {{totalPrice}} ฿
         </span>
-        <button @click="$emit('buy')" class="button is-success">ชำระสินค้า</button>
+        <button :disabled="totalPrice == 0" @click="$emit('buy')" class="button is-success">ชำระสินค้า</button>
       </footer>
     </div>
   </form>
