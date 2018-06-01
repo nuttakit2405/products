@@ -10,8 +10,8 @@ import 'buefy/lib/buefy.css'
 import * as firebase from 'firebase'
 
 var config = {
-  databaseURL: 'https://product-firebase-a9a0e.firebaseio.com',
-  storageBucket: 'product-firebase-a9a0e.appspot.com'
+  databaseURL: 'https://wheypro-5cfc1.firebaseio.com',
+  storageBucket: 'wheypro-5cfc1.appspot.com'
 }
 Vue.prototype.$firebase = firebase.initializeApp(config)
 let storageRef = firebase.storage().ref()

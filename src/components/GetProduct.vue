@@ -1,21 +1,23 @@
 <template>
   <div class="hello container">
-    <div class=" is-size-2 center">WareHouse</div>
+    <router-link to="/">
+      <p class="title is-1">Whey Product</p><br><br>
+    </router-link>
     <div class="columns">
       <div class="column is-offset-2 is-2">
-        <b-field label="Product Name">
+        <b-field label="ชื่อสินค้า">
           <b-input v-model="name"></b-input>
         </b-field>
       </div>
 
       <div class="column is-2">
-        <b-field label="Price per Unit" expanded>
+        <b-field label="ราคา/หน่วย" expanded>
           <b-input type="number" v-model="price"></b-input>
         </b-field>
       </div>
 
       <div class="column is-2">
-        <b-field label="Amount" expanded>
+        <b-field label="จำนวน" expanded>
           <b-input type="number" v-model="amount"></b-input>
         </b-field>
       </div>
@@ -59,7 +61,7 @@
               <div class="columns">
                 <span class="column title is-6 has-text-left has-text-danger">฿{{Product.price}}
                 </span>
-                <span class="column title is-6 has-text-right">Amount {{Product.amount}}
+                <span class="column title is-6 has-text-right">จำนวน {{Product.amount}} ชิ้น
                 </span>
               </div>
             </div>
